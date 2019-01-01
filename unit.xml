@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+    
+    All modifications to this unit type must be added here!
+
+    The version number of the unit type template (utt) has the format X.Y.n, for example 2.3.0, where:
+    -   X stands for the “utt framework version” – this digit should not be updated!
+    -   Y stands for the version of the current utt, from Qmatic – this digit should not be updated!
+    -   n is the serial number that should be updated as soon as the utt has been adapted/customised to better suit your needs.
+
+      
+    Version history in descending order:
+    ====================================
+    Version    Date         Comments                                  Signature
+    =========  ===========  ========================================  =========
+    2.4.1	   2016-08-04   Added parameter to add or substract       Vytautas Leliunas
+	                        number from servicepointLogicId
+	2.4.0      2014-03-20   Minor changes                             olacar
+
+    2.3.0      2013-12-12   First version for R5.3                    olacar
+	
+    ===========================================================================  
+
+-->
+
+<unit name="D948_Hansab"
+      frameworkVersion="2"
+      unitVersion="2.4.3"
+      type="DISPLAY_POINT"
+      defaultNoUnits="1"
+      maxNoUnits="1"
+      description="LED Main display D948 with minuses">
+
+  <helpText>
+      This is a help text
+  </helpText>
+
+  <parameters>
+  
+    <parameter name="unitId"
+      type="UnitId"
+      defaultValue="MainDisplay"
+      label="Unit id"
+      description="Unique id of the unit"
+      sortOrder="1"
+      writeLevel="profile"
+      readLevel="branch"
+      privilege="install:adminAdmin"
+      size="16" />
+      
+    
+        <parameter name="idCode"
+          sortOrder="2"
+          type="IdCode"
+          defaultValue="81"
+          description="Valid values between 1-125"
+          label="ID Code"
+          writeLevel="branch"
+          privilege="install"
+          size="4" />
+        <parameter name="queues"
+          sortOrder="100"
+          type="Queue"
+          label="Included queues"
+          description="Queues that the Presentation Point should display visits from, in combination with Service Points, set on Branch level. Note that if no Queues are selected, all Queues will
+be selected by default."
+          multiSelection="true"
+          writeLevel="profile"
+          readLevel="branch"
+          privilege="install:adminAdmin"
+          mandatory="false" />
+        <parameter name="servicePoints"
+          sortOrder="110"
+          type="ServicePointIdentifier"
+          label="Service Points"
+          description="Visits called from any of the selected Queues, set on Equipment Level, and called  by any of the selected Service Points will be displayed on the Presentation Point. Visits called from a Pool will only filter based on the selected Service Points. Note that if no Service Points are selected, all Service Points will be selected by default."
+          multiSelection="true"
+          writeLevel="branch"
+          readLevel="branch"
+          privilege="install:adminAdmin"
+          mandatory="false" />
+        <parameter name="servicePointsToTheLeft"
+          sortOrder="120"
+          type="String"
+          defaultValue=""
+          description="ServicePoints to the left (comma separated list, e.g. 1-5,7)"
+          label="ServicePoints to the left"
+          writeLevel="branch"
+          readLevel="branch"
+          privilege="install"
+          size="12" />
+        <parameter name="servicePointsToTheRight"
+          sortOrder="130"
+          type="String"
+          defaultValue=""
+          description="ServicePoints to the right (comma separated list, e.g. 6,8-12)"
+          label="ServicePoints to the right"
+          writeLevel="branch"
+          readLevel="branch"
+          privilege="install"
+          size="12" />
+        <parameter name="minVisitDisplayTime"
+          sortOrder="800"
+          type="Integer"
+          defaultValue="3"
+          description="Minimum time that a visit number is displayed on the display (seconds)"
+          label="Min display time"
+          writeLevel="profile"
+          readLevel="branch"
+          privilege="install"
+          size="4" />
+        <parameter name="arrowFlashTime"
+          sortOrder="810"
+          type="Integer"
+          defaultValue="10"
+          description="Arrow flash time (seconds)"
+          label="Arrow flash time"
+          writeLevel="profile"
+          readLevel="branch"
+          privilege="install"
+          size="4" />
+        <parameter name="displayFlashTime"
+          sortOrder="820"
+          type="Integer"
+          defaultValue="0"
+          description="Display flash time (seconds)"
+          label="Display flash time"
+          writeLevel="profile"
+          readLevel="branch"
+          privilege="install"
+          size="4" />
+        <parameter name="timeLEDOff" 
+          sortOrder="830" 
+          type="Integer" 
+          defaultValue="3600" 
+          description="Automatically turn off display after this time of inactivity (seconds)" 
+          label="LED turn off time"
+          writeLevel="profile" 
+          privilege="install" 
+          size="4" />
+        <parameter name="addCounterNumber" 
+          sortOrder="840" 
+          type="Integer" 
+          defaultValue="0" 
+          description="Add number to workstation number." 
+          label="Change workstation number by"
+          writeLevel="profile" 
+		  readLevel="branch"
+          privilege="install" 
+          size="4" />
+		<parameter name="deviceController"
+          sortOrder="999"
+          type="DeviceController"
+          label="Device Controller"
+          mandatory="true"
+          writeLevel="profile"
+          readLevel="branch"
+          privilege="install:adminAdmin" />
+      
+    
+        <parameter name="BSID"
+          sortOrder="500"
+          type="IdCode"
+          defaultValue="100"
+          description="Broadcast ID code, used when uploading fonts. Valid values between 1-125"
+          label="Broadcast ID code"
+          writeLevel="profile"
+          readLevel="branch"
+          privilege="install"
+          size="4" />
+        <parameter name="fontA" description="Display font"
+          sortOrder="510"
+          type="Options"
+          label="Font"
+          defaultValue="/fonts/a9_1252.fnt"
+          writeLevel="profile"
+          multiSelection="false">
+          <options label="Select font">
+            <option label="9 1250 LED display Font">/fonts/a9_1250.fnt</option>
+            <option label="9 1252 LED display Font">/fonts/a9_1252.fnt</option>
+            <option label="9 1253 LED display Font">/fonts/a9_1253.fnt</option>
+            <option label="9 1254 LED display Font">/fonts/a9_1254.fnt</option>
+            <option label="9 1257 LED display Font">/fonts/a9_1257.fnt</option>
+          </options>
+        </parameter>
+        <parameter name="codePage"
+          description="Display codepage"
+          type="Options"
+          label="Codepage"
+          defaultValue="1252"
+          sortOrder="515"
+          writeLevel="profile"
+          multiSelection="false">
+          <options label="Select codepage">
+            <option label="1250">1250</option>
+            <option label="1252">1252</option>
+            <option label="1253">1253</option>
+            <option label="1254">1254</option>
+            <option label="1256">1256</option>
+            <option label="1257">1257</option>
+          </options>
+        </parameter>
+        <parameter name="fontRefreshInterval"
+          sortOrder="520"
+          type="Integer"
+          defaultValue="0"
+          description="Time between refreshes (uploads) of the font file to the display (in minutes). Set to 0 to disable refreshes."
+          label="Font refresh interval"
+          writeLevel="profile"
+          readLevel="branch"
+          privilege="install"/>
+      
+    
+        <parameter name="rows"
+          sortOrder="700"
+          type="Integer"
+          defaultValue="1"
+          description="Number of stacked displays"
+          label="Stacked displays"
+          writeLevel="profile"
+          readLevel="branch"
+          privilege="install"
+          size="4" />
+        <parameter name="scrollEffect"
+          sortOrder="710"
+          type="Boolean"
+          defaultValue="false"
+          description="Text on displays scroll vertically"
+          label="Scroll effect"
+          writeLevel="profile"
+          privilege="install" />
+      
+  
+    <parameter name="unitName"
+      type="UnitName"
+      defaultValue="${unit:name} ${unit:index}"
+      label="Unit name"/>
+    
+  </parameters>
+  
+    <devices>
+      <device id="1" name="LED" type="DMATRIX" controllerId="deviceController" resources="EVENT_SCHEDULER,CMS">
+
+        <parameters>
+          <parameter name="id" type="Integer">${idCode}</parameter>
+          <parameter name="minVisitDisplayTime" type="Integer">${minVisitDisplayTime}</parameter>
+          <parameter name="rows" type="Integer">${rows}</parameter>
+          <!-- Should be JSON fomatted: { "BSID":100, "refreshInterval":0, "fonts":[{"fontId":"A", "fileName":"fontA.fnt"}, {"fontId":"B", "fileName":"fontB.fnt"}] } -->
+          <parameter name="fonts" type="String" evaluate="true">{"BSID": + ${BSID} +, "refreshInterval":${fontRefreshInterval}, "fonts":[{"fontId":"A", "fileName":"+${fontA}+"}]}</parameter>
+          <parameter name="codePage" type="Integer">${codePage}</parameter>
+        </parameters>
+
+				<deviceEventHandlers>
+					<deviceEventHandler handlerType="GROOVY" name="DISPLAY_OFF">
+						<![CDATA[
+						
+        import com.qmatic.qp.api.device.DeviceCommand
+        // remove any old display flash timer
+        timerStopDisplayFlash = device.getState("TIMER_STOP_DISPLAY_FLASH")
+        if(timerStopDisplayFlash) {
+          device.getResource("EVENT_SCHEDULER").remove(timerStopDisplayFlash)
+        }
+        // remove any old arrow flash timer
+        timerStopArrowFlash = device.getState("TIMER_STOP_ARROW_FLASH")
+        if(timerStopArrowFlash) {
+          device.getResource("EVENT_SCHEDULER").remove(timerStopArrowFlash)
+        }
+        DeviceCommand displayCommand = new DeviceCommand(device.getId(), "OUTPUT_LED")
+        displayCommand.setParameters(event.getParameters())
+        displayCommand.setParameter("displayEnabled", false)
+        device.executeCommand(displayCommand)
+      
+						]]>
+					</deviceEventHandler>
+					<deviceEventHandler handlerType="GROOVY" name="STOP_ARROW_FLASH">
+						<![CDATA[
+						
+        import com.qmatic.qp.api.device.DeviceCommand
+        DeviceCommand displayCommand = new DeviceCommand(device.getId(), "OUTPUT_LED")
+        displayCommand.setParameters(event.getParameters())
+        displayCommand.setParameter("bell", false)
+        displayCommand.setParameter("arrowFlash", false)
+        device.executeCommand(displayCommand)
+      
+						]]>
+					</deviceEventHandler>
+					<deviceEventHandler handlerType="GROOVY" name="STOP_DISPLAY_FLASH">
+						<![CDATA[
+						
+        import com.qmatic.qp.api.device.DeviceCommand
+        DeviceCommand displayCommand = new DeviceCommand(device.getId(), "OUTPUT_LED")
+        displayCommand.setParameters(event.getParameters())
+        displayCommand.setParameter("bell", false)
+        displayCommand.setParameter("displayFlash", false)
+        device.executeCommand(displayCommand)
+      
+						]]>
+					</deviceEventHandler>
+				</deviceEventHandlers>
+
+        <deviceCommandHandlers>
+					<deviceCommandHandler handlerType="GROOVY" name="GET_FILE">
+						<![CDATA[
+						
+        import com.qmatic.qp.api.device.DeviceCommand
+        import com.qmatic.qp.core.common.QPResult
+        import com.qmatic.qp.api.command.ResultType
+        name = command.getParameter("name")
+        CMSresource = device.getResource("CMS")
+        Map objectMap = new LinkedHashMap();
+        objectMap.put("data", CMSresource.getBytes(name));
+        result = new QPResult((Serializable) objectMap, ResultType.SIMPLE );
+      
+						]]>
+					</deviceCommandHandler>
+					<deviceCommandHandler handlerType="GROOVY" name="SHOW_VISIT">
+						<![CDATA[
+						
+        import com.qmatic.qp.api.device.DeviceCommand
+        import com.qmatic.qp.api.device.DeviceEvent
+        // remove any old display flash timer
+        timerStopDisplayFlash = device.getState("TIMER_STOP_DISPLAY_FLASH")
+        if(timerStopDisplayFlash) {
+          device.getResource("EVENT_SCHEDULER").remove(timerStopDisplayFlash)
+        }
+        // remove any old arrow flash timer
+        timerStopArrowFlash = device.getState("TIMER_STOP_ARROW_FLASH")
+        if(timerStopArrowFlash) {
+          device.getResource("EVENT_SCHEDULER").remove(timerStopArrowFlash)
+        }
+        DeviceCommand displayCommand = new DeviceCommand(device.getId(), "OUTPUT_LED")
+        displayCommand.setParameters(command.getParameters())
+        device.executeCommand(displayCommand)
+        // restart timer to flash display
+        if(command.getParameter("displayFlash")) {
+          DeviceEvent eDisplayFlash = new DeviceEvent(device.getId(), "STOP_DISPLAY_FLASH")
+          eDisplayFlash.setParameters(command.getParameters())
+          timerStopDisplayFlash = device.getResource("EVENT_SCHEDULER").scheduleEvent(device.getUnit().getConfiguration().get("displayFlashTime"), eDisplayFlash)
+          device.setState("TIMER_STOP_DISPLAY_FLASH", timerStopDisplayFlash)
+        }
+        // restart timer to flash arrow
+        if(command.getParameter("arrowFlash")) {
+          DeviceEvent eArrowFlash = new DeviceEvent(device.getId(), "STOP_ARROW_FLASH")
+          eArrowFlash.setParameters(command.getParameters())
+          timerStopArrowFlash = device.getResource("EVENT_SCHEDULER").scheduleEvent(device.getUnit().getConfiguration().get("arrowFlashTime"), eArrowFlash)
+          device.setState("TIMER_STOP_ARROW_FLASH", timerStopArrowFlash)
+        }
+        // restart timer to turn off display
+        if(device.getUnit().getConfiguration().get("timeLEDOff") > 0) {
+          DeviceCommand cmdDisplayOffTimerReset = new DeviceCommand(device.getId(), "DISPLAY_OFF_TIMER_RESET")
+          device.executeCommand(cmdDisplayOffTimerReset)
+        }
+      
+						]]>
+					</deviceCommandHandler>
+					<deviceCommandHandler handlerType="GROOVY" name="OUTPUT_LED">
+						<![CDATA[
+						ledType = "D948"
+						
+        import com.qmatic.qp.api.device.DeviceEvent
+        import com.qmatic.qp.api.device.DeviceCommand
+        
+        displayEnabled = command.getParameter("displayEnabled")
+        displayFlash = command.getParameter("displayFlash")
+        // set default display script to turn off display
+        displayScript = " D- "
+        displayCommand = []
+        rows = device.getConfiguration().get("rows")
+        if(displayEnabled) {
+          ticketId = command.getParameter("ticket")
+          bell = command.getParameter("bell")
+          
+          arrowFlash = command.getParameter("arrowFlash")
+          displayFlash = command.getParameter("displayFlash")
+          servicePointId = command.getParameter("servicePointLogicId")
+          scrollEffect = device.getUnit().getConfiguration().get("scrollEffect")
+		  // Added by Hansab. Vytautas
+		  additionalNumber = device.getUnit().getConfiguration().get("addCounterNumber")
+		  modifiedServicePointId = servicePointId + additionalNumber
+          
+          theArrow = " "
+          if(command.getParameter("isLeft")) {
+            theArrow = "<"
+          } else if(command.getParameter("isRight")) {
+            theArrow = ">"
+          }
+          if(!displayFlash && ledType != "D2443") {
+            // if whole display flashing we do not need to specify flashing for arrow
+            theArrow = (arrowFlash ? "" + (char)27 + "f+" + theArrow + (char)27 + "f-" : " ")
+          }
+          if(scrollEffect && bell) {
+            theScroll = "CSY SMS 4 PMDC"
+          } else {
+            theScroll = "PC"
+          }
+          
+          String theBell = (bell ? " B" : "")
+          String theFlash = (displayFlash ? " F+" : " F-")
+          String script_flash = ""
+          String script_noflash = ""
+          String script_flash_2nd = ""
+          String script_noflash_2nd = ""
+          
+          switch(ledType) {
+            case "D948":
+              script_flash = theBell + theFlash + " FS A " + theScroll + " I " + ticketId+ " " + theArrow +" "+ modifiedServicePointId
+              script_noflash = " FS A F- " + theScroll + " I " + ticketId + "   " + modifiedServicePointId
+              break
+            case "D972":
+              script_flash = theBell + theFlash + " FS A " + theScroll + " I " + ticketId + " " + theArrow + " " + modifiedServicePointId
+              script_noflash = " FS A F- " + theScroll + " I " + ticketId + "   " + modifiedServicePointId
+              break
+            case "D924x2":
+              // ticket number
+              script_flash = theBell + theFlash + " FS A " + theScroll + " I [" + ticketId + "]"
+              script_noflash = " FS A F- " + theScroll + " I [" + ticketId + "]"
+              // counter number
+              if(command.getParameter("isLeft")) {
+                script_flash2nd = theFlash + " FS A " + theScroll + " I [" + theArrow + modifiedServicePointId + " ]"
+                script_noflash2nd = " FS A F- " + theScroll + " I [" + modifiedServicePointId + "]"
+              } else {
+                script_flash2nd = theFlash + " FS A " + theScroll + " I [ " + modifiedServicePointId + theArrow + "]"
+                script_noflash2nd = " FS A F- " + theScroll + " I [" + modifiedServicePointId + "]"
+              }
+              break
+            case "D2443":
+              script_flash = theBell + theFlash + " PC I " + ticketId + theArrow + modifiedServicePointId
+              script_noflash = " F- PC I " + ticketId + " " + modifiedServicePointId
+              break
+            default:
+              script_flash = theBell + theFlash + " FS A " + theScroll + " I " + ticketId + theArrow + modifiedServicePointId
+              script_noflash = " FS A F- " + theScroll + " I " + ticketId + " " + modifiedServicePointId
+              break
+          }
+          
+          switch(ledType) {
+            case "D924x2":
+              if(!device.getState("CACHE"+0)) {
+                // empty cache, add empty to first position
+                device.setState("CACHE"+0, "")
+                device.setState("CACHE"+1, "")
+              }
+              if(device.getState("CACHE_TICKET_ID") != ticketId) {
+                // new ticket id start rotating position n to 1
+                for(r = rows-1; r >= 1; r--) {
+                  if(device.getState("CACHE"+((r-1)*2))) {
+                    // if position exists then rotate one step down
+                    device.setState("CACHE"+(r*2), device.getState("CACHE"+( (r-1)*2) ))
+                    device.setState("CACHE"+(r*2+1), device.getState("CACHE"+((r-1)*2+1)))
+                  }
+                }
+                device.setState("CACHE"+0, script_noflash)
+                device.setState("CACHE"+1, script_noflash2nd)
+              }
+              device.setState("CACHE_TICKET_ID", ticketId)
+              
+              displayCommand.add([script_flash])
+              displayCommand.add([script_flash2nd])
+              for(r = 1; r < rows; r++) {
+                if(device.getState("CACHE"+(r*2))) {
+                  displayCommand.add([device.getState("CACHE"+(r*2))])
+                  displayCommand.add([device.getState("CACHE"+(r*2+1))])
+                }
+              }
+              break
+            default:
+              if(!device.getState("CACHE"+0)) {
+                // empty cache, add empty to first position
+                device.setState("CACHE"+0, "")
+              }
+              if(device.getState("CACHE_TICKET_ID") != ticketId) {
+                // new ticket id start rotating position n to 1
+                for(r = rows-1; r >= 1; r--) {
+                  if(device.getState("CACHE"+(r-1))) {
+                    // if position exists then rotate one step down
+                    device.setState("CACHE"+r, device.getState("CACHE"+(r-1)))
+                  }
+                }
+                device.setState("CACHE"+0, script_noflash)
+              }
+              device.setState("CACHE_TICKET_ID", ticketId)
+              
+              displayCommand.add([script_flash])
+              for(r = 1; r < rows; r++) {
+                if(device.getState("CACHE"+r)) {
+                  displayCommand.add([device.getState("CACHE"+r)])
+                }
+              }
+              break
+          }
+
+        } else {
+          displayCommand.add([" D- "])
+          for(r = 1; r < rows; r++) {
+            device.setState("CACHE"+r, " D- ")
+            displayCommand.add([" D- "])
+          }
+        }
+        
+
+        toDisplay(displayCommand)
+        
+        def toDisplay(s) {
+          def output = s as Object[][]
+          DeviceEvent displayEvent = new DeviceEvent(device.getId(),"DISPLAY")
+          displayEvent.setParameter("output",output)
+          result = true
+          try {
+             result = device.sendEvent(displayEvent)
+          } catch(e) {
+             device.log("ERROR", e.getMessage())
+             result = false
+          }
+        }
+      
+						]]>
+					</deviceCommandHandler>
+					<deviceCommandHandler handlerType="GROOVY" name="DISPLAY_OFF_TIMER_RESET">
+						<![CDATA[
+						
+            import com.qmatic.qp.api.device.DeviceEvent
+            timerDisplayOff = device.getState("TIMER_DISPLAY_OFF")
+            if(timerDisplayOff) {
+              device.getResource("EVENT_SCHEDULER").remove(timerDisplayOff)
+            }
+            DeviceEvent e = new DeviceEvent(device.getId(), "DISPLAY_OFF")
+            timerDisplayOff = device.getResource("EVENT_SCHEDULER").scheduleEvent(device.getUnit().getConfiguration().get("timeLEDOff"), e)
+            device.setState("TIMER_DISPLAY_OFF", timerDisplayOff)
+          
+						]]>
+					</deviceCommandHandler>
+        </deviceCommandHandlers>
+
+      </device>
+    </devices>
+
+		<unitEvents>
+			<unitEvent name="RESET">
+				<unitEventHandler type="GROOVY">
+					<![CDATA[
+					
+        import com.qmatic.qp.api.device.DeviceEvent
+        led = unit.getDevice("LED")
+        timerDisplayOff = led.getState("TIMER_DISPLAY_OFF")
+        if(timerDisplayOff) {
+          led.getResource("EVENT_SCHEDULER").remove(timerDisplayOff)
+        }
+        DeviceEvent e = new DeviceEvent(led.getId(), "DISPLAY_OFF")
+        timerDisplayOff = led.getResource("EVENT_SCHEDULER").scheduleEvent(0, e)
+        led.setState("TIMER_DISPLAY_OFF", timerDisplayOff)
+      
+					]]>
+				</unitEventHandler>
+			</unitEvent>
+			<unitEvent name="VISIT_CALL">
+				<unitEventHandler type="GROOVY">
+					<![CDATA[
+					
+        import com.qmatic.qp.api.device.DeviceCommand
+        device = unit.getDevice("LED")
+        DeviceCommand displayCommand = new DeviceCommand(device.getId(), "SHOW_VISIT")
+        displayCommand.setParameters(event.getParameters())
+        if(unit.getConfiguration().get("displayFlashTime") > 0) {
+          displayCommand.setParameter("displayFlash", true)
+        } else {
+          displayCommand.setParameter("displayFlash", false)
+        }
+        if(unit.getConfiguration().get("arrowFlashTime") > 0) {
+          displayCommand.setParameter("arrowFlash", true)
+        } else {
+          displayCommand.setParameter("arrowFlash", false)
+        }
+        displayCommand.setParameter("displayEnabled", true)
+        displayCommand.setParameter("bell", true)
+
+        // parse the crazy list for ServicePoints to the Left and Right
+        servicePointId = event.getParameter("servicePointLogicId")
+        isLeft = false
+        isRight = false
+        isLeft = inCrazyList(servicePointId, unit.getConfiguration().get("servicePointsToTheLeft"), false)
+        if(!isLeft) {
+          isRight = inCrazyList(servicePointId, unit.getConfiguration().get("servicePointsToTheRight"), false)
+        }
+        displayCommand.setParameter("isLeft", isLeft)
+        displayCommand.setParameter("isRight", isRight)
+
+        result = false
+        try {
+          result = device.executeCommand(displayCommand)    
+        } catch(e) {
+          result = false
+        }
+
+        def inCrazyList(id, clist, includeIfEmpty) {
+          ret = false
+          if(clist == "" || clist == null) {
+            ret = includeIfEmpty
+          } else {
+            ca=clist.split(",")
+            for(i=0; i<ca.size(); i++) {
+              tmp = ca[i].split("-")
+              if(tmp.size() > 1) {
+                if(id >= tmp[0].toInteger() && id <= tmp[1].toInteger()) {
+                  ret = true
+                }
+              } else {
+                if(id == ca[i].toInteger()) {
+                  ret = true
+                }
+              }
+            }
+          }
+          ret
+        }
+      
+					]]>
+				</unitEventHandler>
+			</unitEvent>
+		</unitEvents>
+
+</unit>
